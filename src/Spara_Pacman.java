@@ -236,8 +236,6 @@ public class Test
 			if(newX < 0.5 || newX >= ((double)W - 0.5) || newY < 0.5 || newY >= ((double)H - 0.5))
 				setCinematics(new Cinematics(cinematics.x, cinematics.y, 0, 0));
 
-			//if(map[(int)(newY + 0.499999)][(int)(newX)] == Block.WALL || map[(int)(newY - 0.499999)][(int)(newX)] == Block.WALL || map[(int)(newY)][(int)(newX + 0.499999)] == Block.WALL || map[(int)(newY)][(int)(newX - 0.499999)] == Block.WALL || map[(int)(newY - 0.499999)][(int)(newX - 0.499999)] == Block.WALL || map[(int)(newY - 0.499999)][(int)(newX + 0.499999)] == Block.WALL || map[(int)(newY + 0.499999)][(int)(newX - 0.499999)] == Block.WALL || map[(int)(newY + 0.499999)][(int)(newX + 0.499999)] == Block.WALL)
-				//setCinematics(new Cinematics(cinematics.x, cinematics.y, 0, 0));
 			if(!isOccupable(map, newX, newY))
 				setCinematics(new Cinematics(cinematics.x, cinematics.y, 0, 0));
 				
@@ -319,21 +317,12 @@ public class Test
 			else
 				return (double)((int)(n * Math.pow(10, d) + 1) / Math.pow(10, d));
 
-			//return (double)((int)(n * Math.pow(10, d)) / Math.pow(10, d));
 		}
 
 		public void AI(final int[][] map, final int H, final int W, final int x, final int y)   //da modificare
 		{
-			//System.out.println("AI():");
 			int direction = Direction.UP;
 			int[][] weights = new int[H][W];
-			//int[][] D = new int[H][W];
-
-			/*
-			for(int i = 0; i < H; i++)
-				for(int j = 0; j < W; j++)
-					D[i][j] = 9;
-			*/
 
 			for(int i = 0; i < H; i++)
 				for(int j = 0; j < W; j++)
@@ -342,68 +331,40 @@ public class Test
 			double currentX = cinematics.x;
 			double currentY = cinematics.y;
 
-			//weights[(int)currentY][(int)currentX] = 0;
 			PriorityQueue<Node> queue = new PriorityQueue<Node>(H*W, ep);
 
-			//System.out.println(currentX +" " + currentY);
 
 			if(isOccupable(map, currentX + STD_SPEED, currentY))
 			{
 				queue.add(new Node(Direction.RIGHT, rightCellX(cut(currentX, 1)), (int)currentY, euristics(rightCellX(cut(currentX, 1)), (int)currentY, x, y)));
 				weights[(int)currentY][rightCellX(cut(currentX, 1))] = 0;
 
-				//D[(int)currentY][rightCellX(cut(currentX, 1))] = Direction.RIGHT;
-				//System.out.println("RIGHT");
-				//System.out.println("RIGHT_CELL:  " + rightCellX(cut(currentX, 1)) + " " + (int)currentY);
 			}
 			if(isOccupable(map, currentX - STD_SPEED, currentY))
 			{
 				queue.add(new Node(Direction.LEFT, leftCellX(cut(currentX, 1)), (int)currentY, euristics(leftCellX(cut(currentX, 1)), (int)currentY, x, y)));
 				weights[(int)currentY][leftCellX(cut(currentX, 1))] = 0;
 
-				//D[(int)currentY][leftCellX(cut(currentX, 1))] = Direction.LEFT;
-				//System.out.println("LEFT");
-				//System.out.println("LEFT_CELL:  " + leftCellX(cut(currentX, 1)) + " " + (int)currentY);
 			}
 			if(isOccupable(map, currentX, currentY + STD_SPEED))
 			{
 				queue.add(new Node(Direction.DOWN, (int)currentX, downCellY(cut(currentY, 1)), euristics((int)currentX, downCellY(cut(currentY, 1)), x, y)));
 				weights[downCellY(cut(currentY, 1))][(int)currentX] = 0;
 
-				//D[downCellY(cut(currentY, 1))][(int)(currentX)] = Direction.DOWN;
-				//System.out.println("DOWN");
-				//System.out.println("DOWN_CELL:  " + (int)currentX + " "+ downCellY(cut(currentY, 1)));
 			}
 			if(isOccupable(map, currentX, currentY - STD_SPEED))
 			{
 				queue.add(new Node(Direction.UP, (int)currentX, upCellY(cut(currentY, 1)), euristics((int)currentX, upCellY(cut(currentY, 1)), x, y)));
 				weights[upCellY(cut(currentY, 1))][(int)currentX] = 0;
 
-				//D[upCellY(cut(currentY, 1))][(int)(currentX)] = Direction.UP;
-				//System.out.println("UP");
-				//System.out.println("UP_CELL:  " + (int)currentX + " " + upCellY(cut(currentY, 1)));
 			}
 
-			/*for(int i = 0; i < H; i++)
-			{
-				for(int j = 0; j < W; j++)
-				{
-					System.out.print(D[i][j] + " ");
-				}
-				System.out.println("");
-			}
-
-			System.out.println("\n");*/
-
-			//System.out.println("If iniziali");
 
 			Node temp;
 
 			while(queue.size() != 0)
 			{
 				temp = queue.poll();
-				//System.out.println("Cicle");
-				//System.out.println(temp.x + " " + temp.y);
 
 				if(temp.x != x || temp.y != y)
 				{
@@ -415,12 +376,10 @@ public class Test
 							else
 							{
 								direction = temp.direction;
-								//System.out.println(direction);
+								
 							}
 							weights[temp.y][temp.x + 1] = weights[temp.y][temp.x] + 1;
 
-							//D[temp.y][temp.x + 1] = temp.direction;
-							//System.out.println(1);
 						}
 
 					if(temp.x - 1 >= 0 && temp.x - 1 < W && temp.y >= 0 && temp.y < H)
@@ -431,12 +390,9 @@ public class Test
 							else
 							{
 								direction = temp.direction;
-								//System.out.println(direction);
 							}
 							weights[temp.y][temp.x - 1] = weights[temp.y][temp.x] + 1;
 
-							//D[temp.y][temp.x - 1] = temp.direction;
-							//System.out.println(2);
 						}
 
 					if(temp.x >= 0 && temp.x < W && temp.y + 1 >= 0 && temp.y + 1 < H)
@@ -447,12 +403,9 @@ public class Test
 							else
 							{
 								direction = temp.direction;
-								//System.out.println(direction);
 							}
 							weights[temp.y + 1][temp.x] = weights[temp.y][temp.x] + 1;
 
-							//D[temp.y + 1][temp.x] = temp.direction;
-							//System.out.println(3);
 						}
 
 					if(temp.x >= 0 && temp.x < W && temp.y - 1 >= 0 && temp.y - 1 < H)
@@ -463,85 +416,31 @@ public class Test
 							else
 							{
 								direction = temp.direction;
-								//System.out.println(direction);
 							}
 							weights[temp.y - 1][temp.x] = weights[temp.y][temp.x] + 1;
 
-							//D[temp.y - 1][temp.x] = temp.direction;
-							//System.out.println(4);
 						}
-					//System.out.println("If annidati nel while");
 				}
-
-				/*
-				for(int i = 0; i < H; i++)
-				{
-					for(int j = 0; j < W; j++)
-					{
-						System.out.print(D[i][j] + " ");
-					}
-					System.out.println("");
-				}
-
-				System.out.println("\n");
-				*/
 			}
 
 			switch(direction)
 			{
 				case Direction.UP:
 					directionUp();
-					//System.out.println("UP");
 					break;
 				case Direction.DOWN:
 					directionDown();
-					//System.out.println("DOWN");
 					break;
 				case Direction.LEFT:
 					directionLeft();
-					//System.out.println("LEFT");
 					break;
 				case Direction.RIGHT:
 					directionRight();
-					//System.out.println("RIGHT");
 					break;
 				default:
 					break;
 			}
 
-			/*
-			for(int i = 0; i < H; i++)
-			{
-				for(int j = 0; j < W; j++)
-				{
-					System.out.print(weights[i][j] + " ");
-				}
-				System.out.println("");
-			}
-
-			System.out.println("\n");
-
-			System.out.println("");
-			*/
-
-			/*int n = rand.nextInt(30);
-			switch(n)
-			{
-				case 0:
-					directionUp();
-					break;
-				case 1:
-					directionDown();
-					break;
-				case 2:
-					directionLeft();
-					break;
-				case 3:
-					directionRight();
-					break;
-				default:
-					break;
-			}*/
 		}
 
 	}
@@ -573,7 +472,6 @@ public class Test
 	
 	public static abstract class SpawnPoint
 	{
-		//public final Character[] characters;
 		public int clockCounter;
 		public final int x;
 		public final int y;
@@ -727,9 +625,6 @@ public class Test
 			try{
 				f = new FileReader("Mappa.txt");
 
-				//System.out.println("File aperto");
-			
-
 				for(int i = 0; i < this.HEIGHT; i++)
 				{
 					for(int j = 0; j < this.WIDTH; j++)
@@ -740,7 +635,6 @@ public class Test
 								//meno_1++;
 							c = (char)tmp;
 						}catch(IOException e){}
-						//System.out.print(tmp + " ");
 						switch(c)
 						{
 							case '#':
@@ -775,30 +669,9 @@ public class Test
 								break;
 						}
 					}
-					//System.out.println("");
 				}
 
-				//System.out.println("Unknown: " + counter);
-				//System.out.println("Meno uno: " + meno_1);
-				//System.out.println("Voids: " + voids);
-				//System.out.println("Normals: " + n);
-
 				MOBSP_DIM = temp_mobsp_dim;
-
-				/*
-				MAP = new int[][]{
-					{1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-					{1, 1, 1, 2, 2, 2, 2, 2, 2, 1},
-					{1, 1, 2, 2, 1, 2, 1, 1, 2, 1},
-					{1, 1, 2, 1, 1, 2, 2, 2, 2, 1},
-					{1, 2, 2, 2, 1, 2, 2, 1, 2, 1},
-					{1, 2, 1, 2, 2, 2, 1, 1, 2, 1},
-					{1, 2, 1, 1, 1, 1, 1, 2, 2, 1},
-					{1, 2, 2, 2, 1, 1, 2, 2, 1, 1},
-					{1, 1, 2, 2, 2, 2, 2, 1, 1, 1},
-					{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-				};
-				*/
 
 				mainCharacter = MSP.spawn();
 				currentNMobs = 0;
@@ -806,8 +679,6 @@ public class Test
 
 			}catch(FileNotFoundException e){}
 			
-			//tempMob = MOBSP.getMobReference();
-			//mobs[0] = new Mob(Size.SMALL, new Cinematics(2.5, 2.5, 0, 0));
 
 		}
 
@@ -870,7 +741,6 @@ public class Test
 
 		public void generateMobs()
 		{
-			//Mob temp = new Mob(Size.SMALL, new Cinematics(0, 0, 0, 0));
 			for(int i = 0; i < MOBSP_DIM; i++)
 			{
 				if(currentNMobs < MAX_N_MOBS)
@@ -1049,10 +919,8 @@ public class Test
 			map.generateMobs();
 			for(int i = 0; i < map.currentNMobs; i++)
 			{
-				//System.out.println("mobs[" + i + "].AI():");
 				map.mobs[i].AI(map.MAP, map.HEIGHT, map.WIDTH, (int)map.mainCharacter.getCinematics().x, (int)map.mainCharacter.getCinematics().y);
 				map.mobs[i].move(map.MAP, map.HEIGHT, map.WIDTH);
-				//System.out.println("\n");
 			}
 
 			for(int i = 0; i < map.currentNFireballs; i++)
