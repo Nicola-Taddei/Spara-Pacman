@@ -5,7 +5,7 @@ A simple video game inspired to pacman, with added features (you can shoot at th
 <br>
 <br>
 
-#Here are some screenshots to give you an idea of what I'm talking about :smiley: :
+### Here are some screenshots to give you an idea of what I'm talking about :smiley: :
 <br>
 <br>
 ![level 1](/screenshots/s1.png)
